@@ -1,7 +1,7 @@
 dev:
 	/Users/fajar/go/bin/air .
 build:
-	docker build -t app .
+	docker build -t jhonoryza/fiber_blog .
 run:
 	docker compose up -d
 update:
