@@ -8,6 +8,8 @@ import (
 func GetConfig() *viper.Viper {
 	config := viper.New()
 	config.AddConfigPath(".")
+	config.AddConfigPath("../")
+	config.AddConfigPath("/app")
 	config.SetConfigType("dotenv")
 	config.SetConfigFile(".env")
 	if err := config.ReadInConfig(); err != nil {
