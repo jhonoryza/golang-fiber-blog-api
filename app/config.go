@@ -7,6 +7,8 @@ import (
 
 func GetConfig() *viper.Viper {
 	config := viper.New()
+	config.AddConfigPath(".")
+	config.SetConfigType("dotenv")
 	config.SetConfigFile(".env")
 	if err := config.ReadInConfig(); err != nil {
 		log.Error(err)

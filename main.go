@@ -34,6 +34,7 @@ func main() {
 	})
 	if err != nil {
 		log.Error(err)
+		panic(err)
 	}
 
 	// setup router
@@ -47,5 +48,6 @@ func main() {
 	err = router.Listen(":" + config.GetString("APP_PORT"))
 	if err != nil {
 		log.Error(err)
+		panic(err)
 	}
 }
