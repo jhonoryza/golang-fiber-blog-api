@@ -20,7 +20,7 @@ func NewPostController(db *gorm.DB) *PostController {
 
 func (controller *PostController) Index(c *fiber.Ctx) error {
 	posts := []entity.Post{}
-	controller.db.Order("published_at desc").Find(&posts)
+	controller.db.Where("published_at is not null").Order("published_at desc").Find(&posts)
 	postResponses := response.NewPostResponses(&posts)
 	return c.JSON(fiber.Map{
 		"code":    http.StatusOK,
@@ -31,7 +31,7 @@ func (controller *PostController) Index(c *fiber.Ctx) error {
 
 func (controller *PostController) Show(c *fiber.Ctx) error {
 	post := entity.Post{}
-	tx := controller.db.First(&post, "slug = ?", c.Params("slug"))
+	tx := controller.db.Where("published_at is not null").Where("slug = ?", c.Params("slug")).First(&post)
 	if tx.Error != nil {
 		return c.JSON(fiber.Map{
 			"code":    http.StatusNotFound,
