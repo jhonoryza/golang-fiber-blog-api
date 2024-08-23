@@ -14,7 +14,7 @@ import (
 
 func main() {
 	// setup log file
-	appLog, err := os.OpenFile("logs/app.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	appLog, err := os.OpenFile("app.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		panic(err)
 	}
