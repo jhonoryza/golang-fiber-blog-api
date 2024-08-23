@@ -1,0 +1,14 @@
+###home
+GET http://localhost:3000
+
+###post index
+GET http://localhost:3000/api/posts
+
+###post show
+GET http://localhost:3000/api/posts/data-wilayah-indonesia
+
+###not found post
+GET http://localhost:3000/api/posts/random
+
+###not found route
+GET http://localhost:3000/rand
