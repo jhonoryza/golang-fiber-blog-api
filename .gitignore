@@ -1,5 +1,4 @@
 .env
 .idea
-tmp
-logs
+.vscode
 app.log
