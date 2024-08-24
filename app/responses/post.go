@@ -1,8 +1,8 @@
-package response
+package responses
 
 import (
-	"fiber_blog/app"
-	"fiber_blog/entity"
+	"fiber_blog/app/models"
+	"fiber_blog/config"
 	"time"
 )
 
@@ -18,14 +18,14 @@ type PostResponses struct {
 	CategoriesName string `json:"categories_name"`
 }
 
-func NewPostResponses(posts *[]entity.Post) *[]PostResponses {
+func NewPostResponses(posts *[]models.Post) *[]PostResponses {
 	var postResponses []PostResponses
 	for _, post := range *posts {
 		summary := CastNilString(post.Summary)
 		slug := CastNilString(post.Slug)
 		authorName := CastNilString(post.AuthorName)
 		categoriesName := CastNilString(post.CategoriesName)
-		imageUrl := app.GetConfig().GetString("IMAGE_BASE_URL") + post.ImageUrl
+		imageUrl := config.GetEnv().GetString("IMAGE_BASE_URL") + post.ImageUrl
 		postResponses = append(postResponses, PostResponses{
 			Id:             post.Id,
 			Title:          post.Title,
@@ -58,12 +58,12 @@ type PostResponse struct {
 	CategoriesName string `json:"categories_name"`
 }
 
-func NewPostResponse(post *entity.Post) *PostResponse {
+func NewPostResponse(post *models.Post) *PostResponse {
 	summary := CastNilString(post.Summary)
 	slug := CastNilString(post.Slug)
 	authorName := CastNilString(post.AuthorName)
 	categoriesName := CastNilString(post.CategoriesName)
-	imageUrl := app.GetConfig().GetString("IMAGE_BASE_URL") + post.ImageUrl
+	imageUrl := config.GetEnv().GetString("IMAGE_BASE_URL") + post.ImageUrl
 	return &PostResponse{
 		Id:             post.Id,
 		AuthorId:       post.AuthorId,

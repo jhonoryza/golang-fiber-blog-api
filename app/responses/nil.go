@@ -1,4 +1,4 @@
-package response
+package responses
 
 func CastNilString(value *string) string {
 	var summary string

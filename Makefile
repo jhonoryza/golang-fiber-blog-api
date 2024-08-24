@@ -1,5 +1,5 @@
 dev:
-	/Users/fajar/go/bin/air .
+	go run main.go
 build:
 	docker build -t jhonoryza/fiber_blog .
 run:
