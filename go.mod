@@ -4,6 +4,7 @@ go 1.22.1
 
 require (
 	github.com/gofiber/fiber/v2 v2.52.5
+	github.com/jhonoryza/inertia-fiber v0.0.1
 	github.com/spf13/viper v1.19.0
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/gorm v1.25.11
@@ -12,9 +13,6 @@ require (
 require (
 	github.com/andybalholm/brotli v1.0.6 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
-	github.com/gofiber/template v1.8.2 // indirect
-	github.com/gofiber/template/html/v2 v2.1.0 // indirect
-	github.com/gofiber/utils v1.1.0 // indirect
 	github.com/google/uuid v1.5.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
@@ -39,7 +37,6 @@ require (
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/theartefak/inertia-fiber v0.0.0-20240109183836-c58663361c30 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.51.0 // indirect

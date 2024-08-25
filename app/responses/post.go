@@ -2,7 +2,7 @@ package responses
 
 import (
 	"fiber_blog/app/models"
-	"fiber_blog/config"
+	"fiber_blog/env"
 	"time"
 )
 
@@ -25,7 +25,7 @@ func NewPostResponses(posts *[]models.Post) *[]PostResponses {
 		slug := CastNilString(post.Slug)
 		authorName := CastNilString(post.AuthorName)
 		categoriesName := CastNilString(post.CategoriesName)
-		imageUrl := config.GetEnv().GetString("IMAGE_BASE_URL") + post.ImageUrl
+		imageUrl := env.GetEnv().GetString("IMAGE_BASE_URL") + post.ImageUrl
 		postResponses = append(postResponses, PostResponses{
 			Id:             post.Id,
 			Title:          post.Title,
@@ -63,7 +63,7 @@ func NewPostResponse(post *models.Post) *PostResponse {
 	slug := CastNilString(post.Slug)
 	authorName := CastNilString(post.AuthorName)
 	categoriesName := CastNilString(post.CategoriesName)
-	imageUrl := config.GetEnv().GetString("IMAGE_BASE_URL") + post.ImageUrl
+	imageUrl := env.GetEnv().GetString("IMAGE_BASE_URL") + post.ImageUrl
 	return &PostResponse{
 		Id:             post.Id,
 		AuthorId:       post.AuthorId,

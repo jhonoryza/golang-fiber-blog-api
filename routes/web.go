@@ -1,29 +1,22 @@
 package routes
 
 import (
-	"fiber_blog/app/controllers"
-	"fiber_blog/config"
+	"fiber_blog/app/controllers/web_controllers"
 	"fmt"
-	"github.com/gofiber/fiber/v2/middleware/csrf"
-	"github.com/gofiber/fiber/v2/middleware/helmet"
+	"github.com/gofiber/fiber/v2"
+
+	"gorm.io/gorm"
 )
 
-func RegisterWebRoute() {
-	router := config.GetRouter()
+func RegisterWebRoute(router *fiber.App, db *gorm.DB) {
 
-	web := router.Group("/")
+	router.Get("/", web_controllers.StaticPage("Home")).Name("home")
+	router.Get("/work-with-me", web_controllers.StaticPage("WorkWithMe")).Name("work-with-me")
+	router.Get("/disclaimer", web_controllers.StaticPage("Disclaimer")).Name("disclaimer")
+	router.Get("/about", web_controllers.StaticPage("About")).Name("about")
 
-	web.Use(csrf.New(csrf.Config{
-		KeyLookup:      "header:X-XSRF-TOKEN",
-		CookieName:     "XSRF-TOKEN",
-		SingleUseToken: true,
-	}))
-
-	web.Use(helmet.New(helmet.Config{
-		ReferrerPolicy: "strict-origin-when-cross-origin",
-	}))
-
-	web.Get("/", controllers.HomeIndex)
+	router.Get("/articles", web_controllers.ArticleIndex(db)).Name("articles.index")
+	router.Get("/articles/:slug", web_controllers.ArticleShow(db)).Name("articles.show")
 
 	fmt.Println("web route register success")
 }

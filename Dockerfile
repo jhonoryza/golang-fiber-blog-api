@@ -12,7 +12,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN CGO_ENABLED=0 GOOS=linux go build -o myapp .
+RUN CGO_ENABLED=0 GOOS=linux go build cmd/main.go -o myapp .
 
 # Stage 2: Final stage
 FROM alpine:edge

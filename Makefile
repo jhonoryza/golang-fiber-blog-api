@@ -1,5 +1,5 @@
 dev:
-	go run main.go
+	go run cmd/main.go
 build:
 	docker build -t jhonoryza/fiber_blog .
 run:

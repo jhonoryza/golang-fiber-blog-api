@@ -3,12 +3,16 @@ GET http://localhost:3000
 
 ###post index
 GET http://localhost:3000/api/posts
+Accept: application/json
 
 ###post show
 GET http://localhost:3000/api/posts/data-wilayah-indonesia
+Accept: application/json
 
 ###not found post
 GET http://localhost:3000/api/posts/random
+Accept: application/json
 
 ###not found route
 GET http://localhost:3000/rand
+Accept: application/json
