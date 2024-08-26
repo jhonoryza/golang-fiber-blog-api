@@ -2,9 +2,13 @@ package routes
 
 import (
 	"fiber_blog/app/controllers/web_controllers"
+	"fiber_blog/env"
 	"fmt"
-	"github.com/gofiber/fiber/v2"
+	"net/http"
 
+	jwtware "github.com/gofiber/contrib/jwt"
+	"github.com/gofiber/fiber/v2"
+	"github.com/jhonoryza/inertia-fiber"
 	"gorm.io/gorm"
 )
 
@@ -17,6 +21,32 @@ func RegisterWebRoute(router *fiber.App, db *gorm.DB) {
 
 	router.Get("/articles", web_controllers.ArticleIndex(db)).Name("articles.index")
 	router.Get("/articles/:slug", web_controllers.ArticleShow(db)).Name("articles.show")
+
+	router.Get("/login", web_controllers.LoginForm()).Name("login.form")
+	router.Post("/login", web_controllers.Login(db)).Name("login")
+
+	authRouter := router.Group("/auth")
+
+	authRouter.Use(func(c *fiber.Ctx) error {
+		cookie := c.Cookies(env.GetEnv().GetString("COOKIE_NAME"))
+		if cookie == "" {
+			return inertia.Render(c, http.StatusOK, "Error", fiber.Map{
+				"message": "Unauthorized",
+			})
+		}
+
+		c.Locals("user", cookie) // Simpan token di context untuk digunakan di middleware berikutnya
+		return c.Next()
+	})
+
+	authRouter.Use(jwtware.New(jwtware.Config{
+		SigningKey:  jwtware.SigningKey{Key: []byte(env.GetEnv().GetString("JWT_SECRET"))},
+		TokenLookup: "cookie:" + env.GetEnv().GetString("COOKIE_NAME"),
+		ContextKey:  "user",
+	}))
+
+	authRouter.Get("dashboard", web_controllers.Dashboard()).Name("dashboard")
+	authRouter.Post("logout", web_controllers.Logout()).Name("logout")
 
 	fmt.Println("web route register success")
 }

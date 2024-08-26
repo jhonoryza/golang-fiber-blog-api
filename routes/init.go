@@ -4,16 +4,16 @@ import (
 	"errors"
 	"fiber_blog/env"
 	"fmt"
+	"os"
+	"os/signal"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/csrf"
 	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/jhonoryza/inertia-fiber"
-	"os"
-	"os/signal"
 )
 
 func fixMimeType(router *fiber.App) {
@@ -42,6 +42,8 @@ func initRouter() *fiber.App {
 				code = e.Code
 			}
 			if code == fiber.StatusNotFound {
+				fmt.Println(e.Error())
+				log.Error(e.Error())
 				if isJsonRequest {
 					return ctx.JSON(fiber.Map{
 						"code":    code,
@@ -54,6 +56,8 @@ func initRouter() *fiber.App {
 				})
 			}
 
+			fmt.Println(e.Error())
+			log.Error(e.Error())
 			if isJsonRequest {
 				return ctx.JSON(fiber.Map{
 					"code":    code,
@@ -81,8 +85,6 @@ func Initialize() *fiber.App {
 	}))
 
 	router.Use(csrf.New(csrf.Config{
-		KeyLookup:      "header:X-XSRF-TOKEN",
-		CookieName:     "XSRF-TOKEN",
 		SingleUseToken: true,
 	}))
 
@@ -99,7 +101,7 @@ func Initialize() *fiber.App {
 	router.Use(inertia.Middleware(r))
 
 	router.Use(logger.New())
-	router.Use(recover.New())
+	// router.Use(recover.New())
 
 	fixMimeType(router)
 
