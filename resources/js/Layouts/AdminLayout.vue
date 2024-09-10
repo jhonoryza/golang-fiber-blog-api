@@ -46,8 +46,14 @@ defineProps({
         <Link href="/auth/dashboard" class="text-primary hover:bg-link hover:text-white p-2">
           Dashboard
         </Link>
+        <Link href="/auth/posts" class="text-primary hover:bg-link hover:text-white p-2">
+          Posts
+        </Link>
         <div class="relative">
-          <button class="flex gap-2 items-center text-primary hover:cursor-pointer p-2 uppercase hover:bg-link hover:text-white" @click="() => showDropdownUser = !showDropdownUser">
+          <button class="flex gap-2 items-center text-primary hover:cursor-pointer p-2 uppercase hover:bg-link hover:text-white"
+                  @click="() => showDropdownUser = !showDropdownUser"
+                  v-click-away="() => showDropdownUser = false"
+          >
             {{ name }}
             <IconUser class="size-4" />
           </button>

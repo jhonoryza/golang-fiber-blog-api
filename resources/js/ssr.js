@@ -5,6 +5,7 @@ import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h } from 'vue'
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import '../css/app.css'
+import VueClickAway from "vue3-click-away";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Artefak';
 
@@ -23,6 +24,7 @@ createServer(page =>
                 render: () => h(App, props),
             })
                 .use(plugin)
+                .use(VueClickAway)
         },
         progress: {
             color: '#4B5563',

@@ -65,6 +65,7 @@ func RegisterWebRoute(router *fiber.App, db *gorm.DB) {
 	authRouter.Get("dashboard", web_controllers.Dashboard()).Name("dashboard")
 	authRouter.Post("logout", web_controllers.Logout()).Name("logout")
 	authRouter.Get("profile", web_controllers.Profile()).Name("dashboard")
+	authRouter.Get("posts", web_controllers.PostIndex(db)).Name("posts.index")
 
 	fmt.Println("web route register success")
 }

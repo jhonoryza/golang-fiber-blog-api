@@ -3,6 +3,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from '@/Plugins/vite/inertia-helpers';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import '../css/app.css'
+import VueClickAway from "vue3-click-away";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Artefak';
 
@@ -16,6 +17,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(VueClickAway)
             .mount(el);
     },
     progress: {
