@@ -4,6 +4,7 @@ import (
 	"fiber_blog/app/controllers/web_controllers"
 	"fiber_blog/env"
 	"fmt"
+	"github.com/golang-jwt/jwt/v5"
 	"net/http"
 
 	jwtware "github.com/gofiber/contrib/jwt"
@@ -45,8 +46,25 @@ func RegisterWebRoute(router *fiber.App, db *gorm.DB) {
 		ContextKey:  "user",
 	}))
 
+	authRouter.Use(func(c *fiber.Ctx) error {
+		user := c.Locals("user").(*jwt.Token)
+		claims := user.Claims.(jwt.MapClaims)
+
+		name, ok := claims["name"].(string)
+		if !ok {
+			return c.Next()
+		}
+
+		inertia.Share(c, fiber.Map{
+			"name": name,
+		})
+
+		return c.Next()
+	})
+
 	authRouter.Get("dashboard", web_controllers.Dashboard()).Name("dashboard")
 	authRouter.Post("logout", web_controllers.Logout()).Name("logout")
+	authRouter.Get("profile", web_controllers.Profile()).Name("dashboard")
 
 	fmt.Println("web route register success")
 }

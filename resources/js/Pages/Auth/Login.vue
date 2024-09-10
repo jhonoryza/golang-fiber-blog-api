@@ -13,12 +13,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import ButtonPrimary from "@/Components/ButtonPrimary.vue";
 import InputText from "@/Components/InputText.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-
-const getCSRFToken = () => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; csrf_=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-};
+import {getCSRFToken} from "@/Composables/helper.js";
 
 const props = defineProps({
     canResetPassword: Boolean,
@@ -58,7 +53,7 @@ const submit = () => {
                 v-model="form.email"
                 required
                 autofocus
-                autocomplete="username"
+                autocomplete="on"
             />
 
             <InputError class="mt-2" :message="errors?.email" />
@@ -73,7 +68,7 @@ const submit = () => {
                 class="mt-1 block w-full"
                 v-model="form.password"
                 required
-                autocomplete="current-password"
+                autocomplete="on"
             />
 
             <InputError class="mt-2" :message="errors?.password" />
