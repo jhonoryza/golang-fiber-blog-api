@@ -1,4 +1,6 @@
 <template>
+  <Head title="About" />
+
   <div class="mx-auto mt-20 max-w-4xl text-primary px-4 text-base sm:text-lg">
     <h1 class="text-4xl sm:text-5xl font-bold">About this site</h1>
     <p class="mt-6">
@@ -14,3 +16,6 @@
     </p>
   </div>
 </template>
+<script setup>
+import {Head} from "@inertiajs/vue3";
+</script>

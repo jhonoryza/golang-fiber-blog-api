@@ -8,7 +8,7 @@ import VueClickAway from "vue3-click-away";
 const appName = import.meta.env.VITE_APP_NAME || 'Artefak';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `${appName} | ${title}`,
     resolve: async (name) => {
         const page = await resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'));
         page.default.layout ??= GuestLayout;

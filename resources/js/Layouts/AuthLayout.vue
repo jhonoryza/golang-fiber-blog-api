@@ -1,6 +1,7 @@
 <script setup>
 import ButtonPrimary from "@/Components/ButtonPrimary.vue";
 import ButtonDarkMode from "@/Components/ButtonDarkMode.vue";
+import {Head} from "@inertiajs/vue3";
 
 const back = () => {
     window.location = "/";
@@ -8,7 +9,11 @@ const back = () => {
 </script>
 
 <template>
-    <div
+  <Head>
+    <meta name="description" content="my personal notes about technology" />
+  </Head>
+
+  <div
         class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900"
     >
         <div class="flex gap-2 justify-start items-center">

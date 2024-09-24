@@ -1,10 +1,13 @@
 <script setup>
+import {Head} from "@inertiajs/vue3";
+
 const startWebDevYear = 2019;
 const currentYear = new Date().getFullYear();
 const expYear = currentYear - startWebDevYear;
 </script>
 
 <template>
+  <Head title="Work with me" />
   <div>
     <div class="mx-auto mt-20 max-w-4xl text-primary text-base sm:text-lg px-4">
       <div class="flex flex-col gap-2">

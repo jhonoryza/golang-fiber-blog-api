@@ -21,6 +21,11 @@ import (
 
 func LoginForm() fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		cookie := c.Cookies(env.GetEnv().GetString("COOKIE_NAME"))
+		if cookie != "" {
+			return inertia.RedirectToRoute(c, "auth.dashboard", fiber.Map{})
+		}
+
 		return inertia.Render(c, http.StatusOK, "Auth/Login", fiber.Map{
 			"canResetPassword": true,
 		})
@@ -165,7 +170,7 @@ func Login(db *gorm.DB) fiber.Handler {
 			SameSite: "Strict",
 		})
 
-		return c.RedirectToRoute("dashboard", fiber.Map{})
+		return inertia.RedirectToRoute(c, "auth.dashboard", fiber.Map{})
 	}
 }
 
@@ -182,6 +187,6 @@ func Logout() fiber.Handler {
 			SameSite: "Strict",
 		})
 
-		return c.RedirectToRoute("login.form", fiber.Map{})
+		return inertia.RedirectToRoute(c, "login", fiber.Map{})
 	}
 }

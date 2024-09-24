@@ -105,7 +105,7 @@ func Initialize() *fiber.App {
 
 	fixMimeType(router)
 
-	router.Static("/assets", "public/build/assets")
+	//router.Static("/assets", "public/build/assets")
 	router.Static("/build/assets", "public/build/assets")
 	router.Static("/storage", "public/storage")
 

@@ -7,9 +7,7 @@ export default {
 </script>
 
 <script setup>
-import ButtonPrimary from "@/Components/ButtonPrimary.vue";
-import { useForm } from "@inertiajs/vue3";
-import {getCSRFToken} from "@/Composables/helper.js";
+import {Head} from "@inertiajs/vue3";
 
 defineProps({
     name: {
@@ -20,6 +18,7 @@ defineProps({
 </script>
 
 <template>
+    <Head title="Profile" />
     <p>Profile {{ name }}</p>
 
 </template>

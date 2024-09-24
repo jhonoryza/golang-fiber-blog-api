@@ -1,4 +1,5 @@
 <template>
+  <Head title="Articles" />
   <div class="mx-auto mt-20 max-w-6xl text-primary text-base sm:text-lg px-4">
     <h1 class="text-4xl sm:text-5xl font-bold">All Articles</h1>
     <div
@@ -17,7 +18,7 @@
   </div>
 </template>
 <script setup>
-import { Link } from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 
 defineProps({
   posts: {

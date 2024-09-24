@@ -1,4 +1,5 @@
 <template>
+  <Head :title="post.title" />
   <div class="mx-auto my-20 max-w-6xl text-primary text-base sm:text-lg px-4">
     <Link href="/articles" class="p-2 bg-primary text-white rounded-lg hover:bg-link">
       ⬅ Go Back
@@ -33,7 +34,7 @@
 </template>
 
 <script setup>
-import { Link } from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import MarkdownRender from "@/Components/MarkdownRender.vue";
 
 defineProps({

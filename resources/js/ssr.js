@@ -11,7 +11,7 @@ const appName = import.meta.env.VITE_APP_NAME || 'Artefak';
 
 createServer(page =>
     createInertiaApp({
-        title: (title) => `${title} - ${appName}`,
+        title: (title) => `${appName} | ${title}`,
         page,
         render: renderToString,
         resolve: async (name) => {

@@ -1,4 +1,6 @@
 <template>
+  <Head title="Disclaimer" />
+
   <div class="mx-auto mt-20 max-w-6xl px-4 text-base sm:text-lg">
     <h1 class="text-4xl sm:text-5xl font-bold">Disclaimer</h1>
     <p class="mt-6">
@@ -16,3 +18,6 @@
     </p>
   </div>
 </template>
+<script setup>
+import {Head} from "@inertiajs/vue3";
+</script>

@@ -1,8 +1,11 @@
 <script setup>
+import { Head } from '@inertiajs/vue3'
 
 </script>
 
 <template>
+  <Head title="Home" description="Home" />
+
   <div>
     <div class="mx-auto mt-20 max-w-6xl px-4">
       <div class="flex flex-col xl:flex-row gap-8">

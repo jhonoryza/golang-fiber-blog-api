@@ -1,5 +1,5 @@
 <script setup>
-import {Link, useForm} from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 import {getCSRFToken} from "@/Composables/helper.js";
 import {IconUser} from "@tabler/icons-vue";
@@ -32,6 +32,10 @@ defineProps({
 </script>
 
 <template>
+  <Head>
+    <meta name="description" content="my personal notes about technology" />
+  </Head>
+
   <div class="container mx-auto flex flex-col min-h-screen font-rubik">
     <nav class="flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-start sm:items-center uppercase text-base font-semibold
     p-4 fixed sm:relative bg-white sm:bg-transparent shadow-lg sm:shadow-none w-full z-20"

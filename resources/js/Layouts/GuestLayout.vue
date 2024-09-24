@@ -1,5 +1,5 @@
 <script setup>
-import { Link } from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 
 const weekday = [
   "Sunday",
@@ -12,9 +12,20 @@ const weekday = [
 ];
 const now = new Date();
 const today = weekday[now.getDay()];
+
+defineProps({
+  name: {
+    type: String,
+  },
+});
+
 </script>
 
 <template>
+  <Head>
+    <meta name="description" content="my personal notes about technology" />
+  </Head>
+
   <div class="container mx-auto flex flex-col min-h-screen font-rubik">
     <nav class="flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-start sm:items-center uppercase text-base font-semibold
     p-4 fixed sm:relative bg-white sm:bg-transparent shadow-lg sm:shadow-none w-full z-50"
@@ -36,7 +47,7 @@ const today = weekday[now.getDay()];
           About
         </Link>
         <Link href="/login" class="text-primary hover:bg-link hover:text-white p-2">
-          Login
+          {{ name ? 'Dashboard' : 'Login' }}
         </Link>
       </div>
     </nav>
