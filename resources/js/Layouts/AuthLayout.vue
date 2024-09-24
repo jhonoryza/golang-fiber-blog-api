@@ -2,6 +2,7 @@
 import ButtonPrimary from "@/Components/ButtonPrimary.vue";
 import ButtonDarkMode from "@/Components/ButtonDarkMode.vue";
 import {Head} from "@inertiajs/vue3";
+import AppToast from "@/Components/Vien/AppToast.vue";
 
 const back = () => {
     window.location = "/";
@@ -13,6 +14,7 @@ const back = () => {
     <meta name="description" content="my personal notes about technology" />
   </Head>
 
+  <AppToast />
   <div
         class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900"
     >

@@ -3,6 +3,7 @@ import {Head, Link, useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 import {getCSRFToken} from "@/Composables/helper.js";
 import {IconUser} from "@tabler/icons-vue";
+import AppToast from "@/Components/Vien/AppToast.vue";
 
 const weekday = [
   "Sunday",
@@ -36,6 +37,7 @@ defineProps({
     <meta name="description" content="my personal notes about technology" />
   </Head>
 
+  <AppToast />
   <div class="container mx-auto flex flex-col min-h-screen font-rubik">
     <nav class="flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-start sm:items-center uppercase text-base font-semibold
     p-4 fixed sm:relative bg-white sm:bg-transparent shadow-lg sm:shadow-none w-full z-20"

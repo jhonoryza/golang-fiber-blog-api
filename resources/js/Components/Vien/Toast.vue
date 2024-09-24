@@ -14,19 +14,19 @@
             'bg-blue-700 dark:bg-blue-600': true,
             'inline-flex flex-shrink-0 justify-center items-center w-8 h-8 rounded-lg': true,
             'text-red-500 bg-red-100 dark:bg-red-800 dark:text-red-200':
-              type == 'danger',
+              type === 'danger',
             'text-green-500 bg-green-100 dark:bg-green-800 dark:text-green-200 ':
-              type == 'success',
+              type === 'success',
             'text-orange-500 bg-orange-100 dark:bg-orange-700 dark:text-orange-200':
-              type == 'warning',
+              type === 'warning',
             'text-sky-500 bg-sky-100 dark:bg-sky-700 dark:text-sky-200':
-              type == 'info',
+              type === 'info',
           }"
         >
-          <IconInfoCircle class="size-5" v-if="type == 'info'" />
-          <IconX class="size-5" v-if="type == 'danger'" />
-          <IconCheck class="size-5" v-if="type == 'success'" />
-          <IconAlertTriangle class="size-5" v-if="type == 'warning'" />
+          <IconInfoCircle class="size-5" v-if="type === 'info'" />
+          <IconX class="size-5" v-if="type === 'danger'" />
+          <IconCheck class="size-5" v-if="type === 'success'" />
+          <IconAlertTriangle class="size-5" v-if="type === 'warning'" />
         </div>
         <!-- end icon -->
 
@@ -79,7 +79,7 @@ const hideMessage = () => {
 
 onMounted(() => {
   isVisible.value = true;
-  setTimeout(() => hideMessage(), 5000);
+  setTimeout(() => hideMessage(), 2000);
 });
 
 const onClose = () => {

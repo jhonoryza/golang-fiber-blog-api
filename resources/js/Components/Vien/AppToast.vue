@@ -1,16 +1,18 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import {onMounted, ref, watch} from "vue";
 import Toast from "./Toast.vue";
+import {usePage} from "@inertiajs/vue3";
 
 const messages = ref([]);
+
 onMounted(() => {
-  if (usePage().props.flash.message) {
-    messages.value.push(usePage().props.flash.message);
+  if (usePage().props.flash !== undefined && usePage().props.flash.message !== "") {
+    messages.value.push(usePage().props.flash);
   }
 });
+
 watch(
-  () => usePage().props.flash.message,
+  () => usePage().props.flash,
   (next) => {
     if (next) {
       messages.value.push(next);

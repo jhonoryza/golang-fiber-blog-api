@@ -4,14 +4,16 @@ import (
 	"errors"
 	"fiber_blog/app/models"
 	"fiber_blog/env"
+	"fiber_blog/utils"
 	"fmt"
+	"github.com/gofiber/fiber/v2/middleware/session"
 	"net/http"
 	"time"
 
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
-	en_translations "github.com/go-playground/validator/v10/translations/en"
+	entranslations "github.com/go-playground/validator/v10/translations/en"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/jhonoryza/inertia-fiber"
@@ -35,15 +37,15 @@ func LoginForm() fiber.Handler {
 func registerValidate() (*validator.Validate, ut.Translator) {
 	validate := validator.New()
 
-	// Mengatur penerjemah (translator) untuk pesan error kustom
+	// set translator for custom error message
 	enLocale := en.New()
 	uni := ut.New(enLocale, enLocale)
 	trans, _ := uni.GetTranslator("en")
 
-	// Mendaftarkan terjemahan default bahasa Inggris
-	_ = en_translations.RegisterDefaultTranslations(validate, trans)
+	// register default translator using en
+	_ = entranslations.RegisterDefaultTranslations(validate, trans)
 
-	// Menambahkan pesan error kustom untuk tag 'required'
+	// add custom error for tag 'required'
 	_ = validate.RegisterTranslation("required", trans, func(ut ut.Translator) error {
 		return ut.Add("required", "{0} is required", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
@@ -51,7 +53,7 @@ func registerValidate() (*validator.Validate, ut.Translator) {
 		return t
 	})
 
-	// Menambahkan pesan error kustom untuk tag 'email'
+	// add custom error for tag 'email'
 	_ = validate.RegisterTranslation("email", trans, func(ut ut.Translator) error {
 		return ut.Add("email", "{0} must be a valid email address!", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
@@ -59,7 +61,7 @@ func registerValidate() (*validator.Validate, ut.Translator) {
 		return t
 	})
 
-	// Menambahkan pesan error kustom untuk tag 'min'
+	// add custom error for tag 'min'
 	_ = validate.RegisterTranslation("min", trans, func(ut ut.Translator) error {
 		return ut.Add("min", "{0} minimum must be {1}", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
@@ -67,7 +69,7 @@ func registerValidate() (*validator.Validate, ut.Translator) {
 		return t
 	})
 
-	// Menambahkan pesan error kustom untuk tag 'max'
+	// add custom error for tag 'max'
 	_ = validate.RegisterTranslation("max", trans, func(ut ut.Translator) error {
 		return ut.Add("max", "{0} maximum must be {1}", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
@@ -93,7 +95,8 @@ func validateLoginData(c *fiber.Ctx) (*LoginData, error) {
 	validate, trans := registerValidate()
 	err = validate.Struct(loginData)
 	if err != nil {
-		validationErrors := err.(validator.ValidationErrors)
+		var validationErrors validator.ValidationErrors
+		errors.As(err, &validationErrors)
 		var errMessage string
 		for _, fieldError := range validationErrors {
 			errMessage = errMessage + fmt.Sprintf("%v,", fieldError.Translate(trans))
@@ -103,10 +106,17 @@ func validateLoginData(c *fiber.Ctx) (*LoginData, error) {
 	return &loginData, nil
 }
 
-func Login(db *gorm.DB) fiber.Handler {
+func Login(db *gorm.DB, store *session.Store) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		loginData, err := validateLoginData(c)
 		if err != nil {
+			inertia.Share(c, fiber.Map{
+				"flash": utils.FlashMessage{
+					Message: err.Error(),
+					Type:    "danger",
+				},
+			})
+
 			return inertia.Render(c, http.StatusBadRequest, "Auth/Login", fiber.Map{
 				"message": err.Error(),
 			})
@@ -127,16 +137,32 @@ func Login(db *gorm.DB) fiber.Handler {
 		var user models.User
 		tx := db.Where("email = ?", email).First(&user)
 		if tx.Error != nil {
+			inertia.Share(c, fiber.Map{
+				"flash": utils.FlashMessage{
+					Message: "Invalid Credential.",
+					Type:    "danger",
+				},
+			})
+
 			return inertia.Render(c, http.StatusBadRequest, "Auth/Login", fiber.Map{
 				"errors": map[string]string{
-					"email": "invalid credential",
+					"email":    "invalid credential",
+					"password": "invalid credential",
 				},
 			})
 		}
 		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(pass))
 		if err != nil {
+			inertia.Share(c, fiber.Map{
+				"flash": utils.FlashMessage{
+					Message: "Invalid Credential.",
+					Type:    "danger",
+				},
+			})
+
 			return inertia.Render(c, http.StatusBadRequest, "Auth/Login", fiber.Map{
 				"errors": map[string]string{
+					"email":    "invalid credential",
 					"password": "invalid credential",
 				},
 			})
@@ -155,12 +181,19 @@ func Login(db *gorm.DB) fiber.Handler {
 		// Generate encoded token and send it as response.
 		tokenString, err := token.SignedString([]byte(env.GetEnv().GetString("JWT_SECRET")))
 		if err != nil {
+			inertia.Share(c, fiber.Map{
+				"flash": utils.FlashMessage{
+					Message: "internal server error",
+					Type:    "danger",
+				},
+			})
+
 			return inertia.Render(c, http.StatusInternalServerError, "Auth/Login", fiber.Map{
 				"message": "internal server error",
 			})
 		}
 
-		// Set cookie dengan token
+		// Set cookie using jwt token
 		c.Cookie(&fiber.Cookie{
 			Name:     env.GetEnv().GetString("COOKIE_NAME"),
 			Value:    tokenString,
@@ -170,21 +203,31 @@ func Login(db *gorm.DB) fiber.Handler {
 			SameSite: "Strict",
 		})
 
+		utils.SessionFlash(store, c, fiber.Map{
+			"message": "login success",
+			"type":    "success",
+		})
+
 		return inertia.RedirectToRoute(c, "auth.dashboard", fiber.Map{})
 	}
 }
 
-func Logout() fiber.Handler {
+func Logout(store *session.Store) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 
-		// Menghapus cookie dengan mengatur waktu kedaluwarsa di masa lalu
+		// delete cookie with expired time
 		c.Cookie(&fiber.Cookie{
 			Name:     env.GetEnv().GetString("COOKIE_NAME"),
 			Value:    "",
-			Expires:  time.Now().Add(-time.Hour), // Set waktu kedaluwarsa di masa lalu
+			Expires:  time.Now().Add(-time.Hour), // Set expired time
 			HTTPOnly: true,
 			Secure:   true,
 			SameSite: "Strict",
+		})
+
+		utils.SessionFlash(store, c, fiber.Map{
+			"message": "logout success",
+			"type":    "success",
 		})
 
 		return inertia.RedirectToRoute(c, "login", fiber.Map{})
