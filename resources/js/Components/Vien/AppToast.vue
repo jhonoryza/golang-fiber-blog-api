@@ -14,7 +14,7 @@ onMounted(() => {
 watch(
   () => usePage().props.flash,
   (next) => {
-    if (next) {
+    if (next && next.message !== "") {
       messages.value.push(next);
     }
   },
